@@ -8,8 +8,7 @@ def sigmoid(z):
 # Instructions: Compute the sigmoid of each value of z (z can be a matrix,
 #               vector or scalar). You may find useful numpy.exp and numpy.power.
 
-    g = 1 / (1 + np.exp(z))
-
+    g = 1 / (1 + np.power(np.e, -z))
 # =============================================================
     return g
 
@@ -27,7 +26,7 @@ def computeCost(X, y, theta):
 #               You should set J to the cost. You may find useful numpy.log
 #               and the sigmoid function you wrote.
 #
-    h = sigmoid(np.dot(X, theta))
+    h = sigmoid(X@theta)
     dota = np.dot(np.transpose(-y), np.log(h))
     dotb = np.dot(np.transpose((1 - y)), np.log(1 - h))
     J = (dota - dotb) / m
@@ -41,14 +40,12 @@ def computeCost(X, y, theta):
 def gradientDescent(X, y, theta, alpha, iterations):
     # Initialize some useful values
     m,n = X.shape
-
     # ====================== YOUR CODE HERE ======================
 
-    h = sigmoid(np.dot(X,theta))
-    dentro = (alpha/m) * (np.log(h)-y)
-    dot = np.dot(np.transpose(dentro),X)
-    theta = theta - (alpha/m) * dot
+    for i in range(iterations):
 
+        h = sigmoid(X @ theta)
+        theta = theta - alpha * 1/m * X.T @ (h-y)
     # ============================================================
     return theta
 
@@ -65,9 +62,9 @@ def predict(X,theta):
 # Instructions: Complete the following code to make predictions using
 #               your learned logistic regression parameters. 
 #               You should set p to a vector of 0's and 1's
-             
 
-  
+    p = sigmoid(X@theta)
+    p =np.round(p)
 
 # =========================================================================
     return p
