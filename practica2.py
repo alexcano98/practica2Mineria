@@ -8,7 +8,7 @@ def sigmoid(z):
 # Instructions: Compute the sigmoid of each value of z (z can be a matrix,
 #               vector or scalar). You may find useful numpy.exp and numpy.power.
 
-    g = 1 / (1 + np.power(np.e, -z))
+    g = 1 / (1 + np.exp(-z))
 # =============================================================
     return g
 
@@ -27,8 +27,8 @@ def computeCost(X, y, theta):
 #               and the sigmoid function you wrote.
 #
     h = sigmoid(X@theta)
-    dota = np.dot(np.transpose(-y), np.log(h))
-    dotb = np.dot(np.transpose((1 - y)), np.log(1 - h))
+    dota = -y.T @ np.log(h)
+    dotb = (1 - y).T @ np.log(1 - h)
     J = (dota - dotb) / m
  # =============================================================
 
@@ -56,7 +56,7 @@ def predict(X,theta):
     # Initialize some useful values
     m,p = X.shape 
 # You need to return the following variable correctly
-    p=np.zeros((m,1))
+    p =np.zeros((m,1))
 
 # ====================== YOUR CODE HERE ======================
 # Instructions: Complete the following code to make predictions using
@@ -64,7 +64,7 @@ def predict(X,theta):
 #               You should set p to a vector of 0's and 1's
 
     p = sigmoid(X@theta)
-    p =np.round(p)
+    p = np.round(p+1)-1
 
 # =========================================================================
     return p
